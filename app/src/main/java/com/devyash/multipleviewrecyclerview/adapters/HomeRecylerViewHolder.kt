@@ -21,7 +21,7 @@ sealed class HomeRecylerViewHolder(
 
     class MoviesViewHolder(private val binding: ItemMovieBinding):HomeRecylerViewHolder(binding){
         fun bind(movie:HomeRecylerViewItem.Movie){
-            Glide.with(binding.root).load(movie.thumbnail).into(binding.ivMoviePoster  )
+            Glide.with(binding.root).load(movie.thumbnail).into(binding.ivMoviePoster)
         }
     }
 
