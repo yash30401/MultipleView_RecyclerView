@@ -1,6 +1,7 @@
 package com.devyash.multipleviewrecyclerview.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,8 @@ class HomeRecylerViewAdapter : RecyclerView.Adapter<HomeRecylerViewHolder>() {
         items = newData
         diffUtilResult.dispatchUpdatesTo(this)
     }
+
+    var itemClickListener: ((view: View, item: HomeRecylerViewItem, position: Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeRecylerViewHolder {
         return when (viewType) {
@@ -53,6 +56,7 @@ class HomeRecylerViewAdapter : RecyclerView.Adapter<HomeRecylerViewHolder>() {
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: HomeRecylerViewHolder, position: Int) {
+        holder.itemClickListener = itemClickListener
         when (holder) {
             is HomeRecylerViewHolder.DirectorViewHolder -> {
                 holder.bind(items[position] as HomeRecylerViewItem.Director)

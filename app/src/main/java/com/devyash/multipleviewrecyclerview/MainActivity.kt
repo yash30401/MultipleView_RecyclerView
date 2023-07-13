@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devyash.multipleviewrecyclerview.adapters.HomeRecylerViewAdapter
 import com.devyash.multipleviewrecyclerview.databinding.ActivityMainBinding
+import com.devyash.multipleviewrecyclerview.models.HomeRecylerViewItem
 import com.devyash.multipleviewrecyclerview.network.NetworkResult
 
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +35,15 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         setupRecylerView()
+
+        homeAdapter.itemClickListener = {view, item, position ->  
+            val message = when(item){
+                is HomeRecylerViewItem.Director -> "Director Clicked"
+                is HomeRecylerViewItem.Movie -> "Movie Clicked"
+                is HomeRecylerViewItem.Title -> "Title Clicked"
+            }
+            Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+        }
 
         viewModel.homeListItems.observe(this, Observer { result ->
             when (result) {
