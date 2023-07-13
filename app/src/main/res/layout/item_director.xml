@@ -40,8 +40,8 @@
         android:fontFamily="@font/poppins"
         android:text="22 Movies"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_name"
-        tools:layout_editor_absoluteX="94dp" />
+        app:layout_constraintStart_toStartOf="@+id/text_view_name"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_name" />
 
     <View
         android:id="@+id/view"

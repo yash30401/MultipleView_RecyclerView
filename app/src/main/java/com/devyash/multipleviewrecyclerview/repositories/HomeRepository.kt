@@ -9,11 +9,11 @@ class HomeRepository {
 
     private val movieApi = MovieApiService.movieApi
 
-    suspend fun getMovies(): Response<HomeRecylerViewItem.Movie> {
+    suspend fun getMovies(): Response<List<HomeRecylerViewItem.Movie>> {
         return movieApi.getMovies()
     }
 
-    suspend fun getDirectors(): Response<HomeRecylerViewItem.Director> {
+    suspend fun getDirectors(): Response<List<HomeRecylerViewItem.Director>> {
         return movieApi.getDirectors()
     }
 }

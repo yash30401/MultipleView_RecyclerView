@@ -7,8 +7,8 @@ import retrofit2.http.GET
 interface MovieApi {
 
     @GET("/movies")
-    suspend fun getMovies():Response<HomeRecylerViewItem.Movie>
+    suspend fun getMovies():Response<List<HomeRecylerViewItem.Movie>>
 
     @GET("/directors")
-    suspend fun getDirectors():Response<HomeRecylerViewItem.Director>
+    suspend fun getDirectors():Response<List<HomeRecylerViewItem.Director>>
 }

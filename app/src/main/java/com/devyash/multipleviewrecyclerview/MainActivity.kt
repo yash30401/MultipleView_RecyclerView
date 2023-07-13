@@ -1,10 +1,12 @@
 package com.devyash.multipleviewrecyclerview
 
+import HomeViewModel
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
@@ -13,9 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.devyash.multipleviewrecyclerview.adapters.HomeRecylerViewAdapter
 import com.devyash.multipleviewrecyclerview.databinding.ActivityMainBinding
 import com.devyash.multipleviewrecyclerview.network.NetworkResult
-import com.devyash.multipleviewrecyclerview.viewmodels.HomeViewModel
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,26 +35,27 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         setupRecylerView()
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.homeListItems.collect { result ->
-                when (result) {
-                    is NetworkResult.Error -> {
-                        binding.progressBar.visibility = View.GONE
-                        Toast.makeText(this@MainActivity, "Something Went Wrong!", Toast.LENGTH_SHORT).show()
-                    }
+        viewModel.homeListItems.observe(this, Observer { result ->
+            when (result) {
+                is NetworkResult.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Something Went Wrong!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
-                    is NetworkResult.Loading -> binding.progressBar.visibility = View.VISIBLE
-                    is NetworkResult.Success ->{
-                        binding.progressBar.visibility =View.GONE
-                        homeAdapter.items = result.data!!
-                    }
-                    else->{
-                        Log.d("TEST","Something Went Wrong!")
-                    }
+                is NetworkResult.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    homeAdapter.setData(result.data!!)
                 }
             }
-        }
-
+        })
     }
 
     private fun setupRecylerView() {
@@ -66,5 +70,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        binding.recyclerView.adapter = null
     }
 }
